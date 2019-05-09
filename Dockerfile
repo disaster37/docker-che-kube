@@ -46,3 +46,4 @@ RUN \
 
 
 VOLUME ["${APP_HOME}"]
+CMD  ["bash"]

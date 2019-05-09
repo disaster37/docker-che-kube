@@ -5,8 +5,8 @@ MAINTAINER Sebastien LANGOUREAUX (linuxworkgroup@hotmail.com)
 ENV RANCHER_VERSION=v2.2.0 \
     HELM_VERSION=v2.13.1 \
     KUBECTL_VERSION=v1.14.1 \
-    GID=1001 \
-    UID=1001 \
+    GID=1724 \
+    UID=1724 \
     GROUP=dev \
     USER=dev \
     APP_HOME=/home/dev

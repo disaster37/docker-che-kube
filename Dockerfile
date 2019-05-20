@@ -53,7 +53,6 @@ RUN \
     chmod +x /usr/bin/terragrunt
 
 
-
 # Clean image
 RUN rm -rf /tmp/*
 

@@ -1,20 +1,22 @@
-FROM alpine:3.9
+FROM registry.centos.org/che-stacks/centos-stack-base:latest
 MAINTAINER Sebastien LANGOUREAUX (linuxworkgroup@hotmail.com)
 
 # Set environment
 ENV RANCHER_VERSION=v2.2.0 \
     HELM_VERSION=v2.13.1 \
     KUBECTL_VERSION=v1.14.1 \
-    GID=1724 \
-    UID=1724 \
-    GROUP=dev \
-    USER=dev \
-    APP_HOME=/home/dev
+    VAULT_VERSION=1.1.2\
+    TERRAFORM_VERSION=0.11.13\
+    TERRAGRUNT_VERSION=v0.18.5
+
+USER root
 
 # Add packages
 RUN \
-    apk --update add bash curl docker-bash-completion docker git vim sudo openssh-client zip wget make &&\
-    rm -rf /var/cache/apk/*
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &&\
+    yum install -y docker-ce-cli vim zip wget make &&\
+    yum clean all
+    
 
 # Add rancher cli
 RUN \
@@ -33,17 +35,28 @@ RUN \
     curl -fL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /usr/bin/kubectl &&\
     chmod +x /usr/bin/kubectl
 
-# Add dev account
+# Add vault cli
 RUN \
-    addgroup -g ${GID} ${GROUP} && \
-    adduser -g "${USER} user" -D -h ${APP_HOME} -G ${GROUP} -s /bin/bash -u ${UID} ${USER} &&\
-    echo "%dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/dev
+    curl -fL https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o /tmp/vault.zip &&\
+    unzip /tmp/vault.zip -d /tmp &&\
+    mv /tmp/vault /usr/bin/
+
+# Add terraform cli
+RUN \
+    curl -fL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/terraform.zip &&\
+    unzip /tmp/terraform.zip -d /tmp &&\
+    mv /tmp/terraform /usr/bin/
+
+# Add terragrun cli
+RUN \
+    curl -fL https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 -o /usr/bin/terragrunt &&\
+    chmod +x /usr/bin/terragrunt
+
+
 
 # Clean image
-RUN \
-    rm -rf /var/cache/apk/* &&\
-    rm -rf /tmp/*
+RUN rm -rf /tmp/*
 
+USER user
 
-VOLUME ["${APP_HOME}"]
 CMD  ["bash"]

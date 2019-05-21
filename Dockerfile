@@ -58,4 +58,4 @@ RUN rm -rf /tmp/*
 
 USER user
 
-CMD  ["bash"]
+EXPOSE 8080

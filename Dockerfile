@@ -56,7 +56,6 @@ RUN \
     curl -fL https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 -o /usr/bin/terragrunt &&\
     chmod +x /usr/bin/terragrunt
 
-
 USER user
 
 EXPOSE 8080

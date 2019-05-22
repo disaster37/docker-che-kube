@@ -22,13 +22,15 @@ RUN \
 RUN \
     curl -fL https://github.com/rancher/cli/releases/download/${RANCHER_VERSION}/rancher-linux-amd64-${RANCHER_VERSION}.tar.gz -o /tmp/rancher.tar.gz &&\
     tar -xvzf /tmp/rancher.tar.gz -C /tmp &&\
-    mv /tmp/rancher-*/rancher /usr/bin/
+    mv /tmp/rancher-*/rancher /usr/bin/ &&\
+    rm -rf /tmp/rancher*
 
 # Add helm cli
 RUN \
     curl -fL https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -o /tmp/helm.tar.gz &&\
     tar -xvzf /tmp/helm.tar.gz -C /tmp &&\
-    mv /tmp/linux-amd64/helm /usr/bin/
+    mv /tmp/linux-amd64/helm /usr/bin/ &&\
+    rm -rf /tmp/helm* /tmp/linux-amd64
 
 # Add kube cli
 RUN \
@@ -39,22 +41,21 @@ RUN \
 RUN \
     curl -fL https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o /tmp/vault.zip &&\
     unzip /tmp/vault.zip -d /tmp &&\
-    mv /tmp/vault /usr/bin/
+    mv /tmp/vault /usr/bin/ &&\
+    rm -rf /tmp/vault*
 
 # Add terraform cli
 RUN \
     curl -fL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/terraform.zip &&\
     unzip /tmp/terraform.zip -d /tmp &&\
-    mv /tmp/terraform /usr/bin/
+    mv /tmp/terraform /usr/bin/ &&\
+    rm -rf /tmp/terraform*
 
 # Add terragrun cli
 RUN \
     curl -fL https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 -o /usr/bin/terragrunt &&\
     chmod +x /usr/bin/terragrunt
 
-
-# Clean image
-RUN rm -rf /tmp/*
 
 USER user
 

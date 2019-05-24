@@ -11,6 +11,11 @@ ENV RANCHER_VERSION=v2.2.0 \
 
 USER root
 
+# Force right UID and GID for user
+RUN \
+    usermod -u 1724 user &&\
+    groupmod -g 1724 user
+
 # Add packages
 RUN \
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &&\

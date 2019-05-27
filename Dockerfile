@@ -22,19 +22,20 @@ RUN \
     yum install -y docker-ce-cli vim make &&\
     yum clean all
 
+# Create temps folder for tools
+RUN mkdir /tmp/tools
+
 # Add rancher cli
 RUN \
-    curl -fL https://github.com/rancher/cli/releases/download/${RANCHER_VERSION}/rancher-linux-amd64-${RANCHER_VERSION}.tar.gz -o /tmp/rancher.tar.gz &&\
-    tar -xvzf /tmp/rancher.tar.gz -C /tmp &&\
-    mv /tmp/rancher-*/rancher /usr/bin/ &&\
-    rm -rf /tmp/rancher*
+    curl -fL https://github.com/rancher/cli/releases/download/${RANCHER_VERSION}/rancher-linux-amd64-${RANCHER_VERSION}.tar.gz -o /tmp/tools/rancher.tar.gz &&\
+    tar -xvzf /tmp/tools/rancher.tar.gz -C /tmp/tools &&\
+    mv /tmp/tools/rancher-*/rancher /usr/bin/
 
 # Add helm cli
 RUN \
-    curl -fL https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -o /tmp/helm.tar.gz &&\
-    tar -xvzf /tmp/helm.tar.gz -C /tmp &&\
-    mv /tmp/linux-amd64/helm /usr/bin/ &&\
-    rm -rf /tmp/helm* /tmp/linux-amd64
+    curl -fL https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -o /tmp/tools/helm.tar.gz &&\
+    tar -xvzf /tmp/tools/helm.tar.gz -C /tmp/tools &&\
+    mv /tmp/tools/linux-amd64/helm /usr/bin/
 
 # Add kube cli
 RUN \
@@ -43,22 +44,23 @@ RUN \
 
 # Add vault cli
 RUN \
-    curl -fL https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o /tmp/vault.zip &&\
-    unzip /tmp/vault.zip -d /tmp &&\
-    mv /tmp/vault /usr/bin/ &&\
-    rm -rf /tmp/vault*
+    curl -fL https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o /tmp/tools/vault.zip &&\
+    unzip /tmp/tools/vault.zip -d /tmp/tools &&\
+    mv /tmp/tools/vault /usr/bin/
 
 # Add terraform cli
 RUN \
-    curl -fL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/terraform.zip &&\
-    unzip /tmp/terraform.zip -d /tmp &&\
-    mv /tmp/terraform /usr/bin/ &&\
-    rm -rf /tmp/terraform*
+    curl -fL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/tools/terraform.zip &&\
+    unzip /tmp/tools/terraform.zip -d /tmp &&\
+    mv /tmp/tools/terraform /usr/bin/
 
 # Add terragrun cli
 RUN \
     curl -fL https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 -o /usr/bin/terragrunt &&\
     chmod +x /usr/bin/terragrunt
+    
+# Clean
+RUN rm -rf /tmp/tools
 
 USER user
 

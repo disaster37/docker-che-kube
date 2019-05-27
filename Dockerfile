@@ -51,7 +51,7 @@ RUN \
 # Add terraform cli
 RUN \
     curl -fL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/tools/terraform.zip &&\
-    unzip /tmp/tools/terraform.zip -d /tmp &&\
+    unzip /tmp/tools/terraform.zip -d /tmp/tools &&\
     mv /tmp/tools/terraform /usr/bin/
 
 # Add terragrun cli

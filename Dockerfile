@@ -17,6 +17,11 @@ RUN sh /tmp/alpine.sh
 RUN \
     apk --update add docker-bash-completion docker openssh-client &&\
     rm -rf /var/cache/apk/*
+   
+# Add docker-compose
+RUN \
+    apk --update add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make &&\
+    pip install docker-compose
 
 # Add rancher cli
 RUN \

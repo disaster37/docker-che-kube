@@ -45,4 +45,4 @@ USER dev
 WORKDIR "/projects"
 VOLUME "/home/dev"
 
-CMD ["sleep", "infinity"]
+CMD ["tail", "-f", "/dev/null"]
